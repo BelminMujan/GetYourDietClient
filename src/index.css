@@ -1,0 +1,109 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+:root {
+  font-size: 16px;
+  --sidebar-width: 200px;
+  --light-blue: #1e96fc;
+  --green: #9ef01a;
+}
+
+.admin-layout-wrapper {
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-left: var(--sidebar-width);
+  padding: 2rem 3rem;
+}
+
+.center-on-screen {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-message {
+  font-size: 0.75rem;
+  text-align: center;
+  color: red;
+  margin: 0 0 5px 0;
+}
+
+.sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  background-color: var(--green);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  padding: 25px 0;
+}
+.sidebar-wrapper .item {
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  color: white;
+}
+.sidebar-wrapper .item.active {
+  background-color: white;
+  color: var(--green);
+}
+
+.input-field-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.input-field-wrapper.error input {
+  border: 1px solid red;
+}
+.input-field-wrapper input {
+  padding: 0.5em 0.75em;
+  border-radius: 8px;
+  border: 1px solid var(--light-blue);
+}
+.input-field-wrapper input:focus {
+  outline: none;
+  box-shadow: 0 0 2px var(--light-blue);
+}
+
+.button-wrapper {
+  background-color: var(--light-blue);
+  font-size: 1rem;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+}
+.button-wrapper:hover {
+  transform: scale(1.02);
+}
+.button-wrapper:active {
+  transform: scale(0.98);
+}
+
+.login-wrapper {
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}/*# sourceMappingURL=index.css.map */

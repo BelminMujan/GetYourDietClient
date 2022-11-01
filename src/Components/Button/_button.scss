@@ -1,0 +1,16 @@
+.button-wrapper{
+    background-color: var(--light-blue);
+    font-size: 1rem;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+    &:hover{
+        transform: scale(1.02);
+    }
+    &:active{
+        transform: scale(0.98);
+    }
+}

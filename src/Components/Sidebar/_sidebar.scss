@@ -1,0 +1,21 @@
+.sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    background-color: var(--green);
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 25px 0;
+    .item {
+        text-decoration: none;
+        padding: 0.5rem 1.5rem;
+        color: white;
+        &.active {
+            background-color: white;
+            color: var(--green)
+        }
+    }
+}
