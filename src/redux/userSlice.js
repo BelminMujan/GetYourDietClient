@@ -50,7 +50,6 @@ export const login = ({ email, password }) => async (dispatch) => {
     };
 
 export const getUser = () => async (dispatch) => {  
-    console.log("Getting user");  
     try {
         let res = await fetch(`${process.env.REACT_APP_API}/user`, {
             method: "GET",
@@ -60,15 +59,50 @@ export const getUser = () => async (dispatch) => {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
-        let data = await res.json();
-        if (data.message) {
-            return false;
+        if(res.status === 200){
+            let data = await res.json();
+            dispatch(loginSuccess(data))
+            if (data.message) {
+                return false;
+            }
         }
-       dispatch(loginSuccess(data))
+        if(res.status === 401){
+            localStorage.removeItem("token")
+            window.location.pathname = "/login"
+        }
+        
     } catch (e) {
-        return console.log(e);
+        localStorage.removeItem("token")
+        console.log(e);
     }
 };
+
+export const updateUser=(data)=>async (dispatch) =>{
+    try {
+        let res = await fetch(`${process.env.REACT_APP_API}/update-user`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify(data),
+        });
+        let dd = await res.json();
+        dispatch(loginErrors(null));
+        dispatch(loginMessage(null));
+        if (dd?.errors) {
+            dispatch(loginErrors(dd.errors));
+            return false
+        }
+        if (dd?.message) {
+            dispatch(loginMessage(dd.message));
+        }
+        return true
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 export const { loginSuccess, logoutReducer, loginErrors, loginMessage } = userSlice.actions;
 export default userSlice.reducer;
