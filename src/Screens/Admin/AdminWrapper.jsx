@@ -6,6 +6,7 @@ import { getUser, login } from "../../redux/userSlice";
 import {useDispatch, useSelector} from "react-redux"
 import { ClipLoader } from "react-spinners";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 const AdminWrapper = () => {
     const dispatch = useDispatch()
@@ -25,6 +26,7 @@ const AdminWrapper = () => {
     return (
         <div className="admin-layout-wrapper">
             <Sidebar routes={adminPanelSidebarRoutes} />
+            <Toaster />
             <Outlet />
         </div>
     );

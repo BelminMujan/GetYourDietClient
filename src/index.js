@@ -11,6 +11,7 @@ import store from "./store";
 import { loadUser } from "./redux/userSlice";
 import AdminWrapper from "./Screens/Admin/AdminWrapper";
 import Login from "./Screens/Auth/Login";
+import GetDiet from "./Screens/GetDiet/GetDiet";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const routes = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const routes = createBrowserRouter([
     {
         path: "login",
         element: <Login/>
+    },
+    {
+        path: "get-diet",
+        element: <GetDiet/>
     },
     {
         path: "admin",

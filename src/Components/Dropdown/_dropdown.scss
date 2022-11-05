@@ -1,0 +1,18 @@
+.dropdown-wrapper{
+    display: flex;
+    flex-direction: column;
+    p{
+        margin: 0;
+    }
+    select{
+        padding: 0.5em 0.75em;
+        border-radius: 8px;
+        border: 1px solid var(--light-blue);
+    }
+    &.inline{
+        flex-flow: row;
+        align-items: center;
+        gap:10px;
+    }
+  
+}

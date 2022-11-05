@@ -1,7 +1,7 @@
 import React from "react";
 
 const Input =(props)=>{
-    return <label className={`input-field-wrapper ${props.error ? "error":""}`}>
+    return <label className={`input-field-wrapper ${props.error ? "error":""} ${props?.inline ?"inline":""}`}>
         {props.label}
         <input {...props}/>
         {props.error && props.error.map((e,i)=>{

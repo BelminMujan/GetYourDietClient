@@ -1,0 +1,10 @@
+.option-select-wrapper{
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    border: 1px solid var(--light-blue);
+    cursor: pointer;
+    &.selected{
+        background-color: var(--light-blue);
+        color:white;
+    }
+}

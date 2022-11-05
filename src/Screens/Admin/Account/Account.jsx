@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../Components/Button/Button";
 import Input from "../../../Components/Input/Input";
 import { updateUser } from "../../../redux/userSlice";
+import { options } from "../../../Utils/toastOptions";
 
 const Account = () => {
     const dispatch = useDispatch();
@@ -79,8 +81,10 @@ const Account = () => {
             if (password !== "") pd.password = password;
             if (password_confirmation !== "") pd.password_confirmation = password_confirmation;
             let res = await dispatch(updateUser(pd));
-            if(res === true)
+            if(res === true) {
                 setEditing(false);
+                toast.success("User updated sucessfully!", options)
+            }
         } else {
             setEditing(true);
         }

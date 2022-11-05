@@ -46,13 +46,19 @@ code {
 
 @import "./Screens/Landing/landingPage";
 @import "./Components/Sidebar/sidebar";
+@import "./Components/Navbar/navbar";
 @import "./Components/Input/input";
+@import "./Components/Dropdown/dropdown";
 @import "./Components/Button/button";
 @import "./Components/ListItem/listItem";
+@import "./Components/RowItem/rowItem";
+@import "./Components/OptionSelect/optionSelect";
 @import "./Screens/Admin/Account/account";
 @import "./Screens/Admin/Transactions/transactions";
 @import "./Screens/Admin/Users/users";
 @import "./Screens/Admin/DietRequests/dietRequests";
 @import "./Screens/Admin/Dashboard/dashboard";
 @import "./Screens/Admin/Blog/blog";
+@import "./Screens/Admin/Blog/Builder/builder";
 @import "./Screens/Auth/login";
+@import "./Screens/GetDiet/getDiet";

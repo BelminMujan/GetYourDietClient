@@ -18,7 +18,7 @@ const Login = () => {
             navigate("/admin/dashboard")
         }
     }
-    const {errors, message} = useSelector(state => state.user)
+    const {errors, message, loading} = useSelector(state => state.user)
     const fields = [
         { label: "Email", type: "email", value: email, onChange: (e) => setEmail(e.target.value), error: errors?.email },
         { label: "Password", type: "password", value: password, onChange: (e) => setPassword(e.target.value), error: errors?.password },
@@ -29,7 +29,7 @@ const Login = () => {
                 fields.map((f) => {
                     return <Input key={f.label} {...f} />;
                 })}
-            <Button onClick={handleLogin}>Login</Button>
+            <Button onClick={handleLogin} loading={loading}>Login</Button>
                 {message && <p className="error-message">{message}</p>}
         </div>
     );

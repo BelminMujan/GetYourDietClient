@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
     name: "user",
-    initialState: { user: null, errors: null, message: null },
+    initialState: { user: null, errors: null, message: null, loading: false },
     reducers: {
         loginSuccess: (state, action) => {
             state.user = action.payload;
@@ -13,6 +13,9 @@ const userSlice = createSlice({
         loginMessage: (state, action) => {
             state.message = action.payload;
         },
+        loginLoading: (state, action) =>{
+            state.loading = action.payload
+        },
         logoutReducer: (state, action) => {
             state.user = null;
             localStorage.removeItem("token");
@@ -22,6 +25,7 @@ const userSlice = createSlice({
 
 export const login = ({ email, password }) => async (dispatch) => {
         try {
+            dispatch(loginLoading(true))
             let res = await fetch(`${process.env.REACT_APP_API}/login`, {
                 method: "POST",
                 headers: {
@@ -39,12 +43,15 @@ export const login = ({ email, password }) => async (dispatch) => {
             if (data?.message) {
                 dispatch(loginMessage(data.message));
             }
+            dispatch(loginLoading(false))
             if (data?.token && data?.user) {
                 localStorage.setItem("token", data.token);
                 dispatch(loginSuccess(data.user));
                 return true;
             }
         } catch (e) {
+            dispatch(loginLoading(false))
+            dispatch(loginMessage(e.message))
             return console.log(e);
         }
     };
@@ -104,5 +111,5 @@ export const updateUser=(data)=>async (dispatch) =>{
     }
 }
 
-export const { loginSuccess, logoutReducer, loginErrors, loginMessage } = userSlice.actions;
+export const { loginSuccess, logoutReducer, loginErrors, loginMessage, loginLoading } = userSlice.actions;
 export default userSlice.reducer;

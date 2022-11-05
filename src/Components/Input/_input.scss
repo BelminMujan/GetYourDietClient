@@ -1,6 +1,11 @@
 .input-field-wrapper{
     display: flex;
     flex-direction: column;
+    &.inline{
+        flex-direction: row;
+        gap: 6px;
+        align-items: center;
+    }
     &.error{
         input{
             border: 1px solid red;
