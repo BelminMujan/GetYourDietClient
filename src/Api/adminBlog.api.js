@@ -34,10 +34,15 @@ export const saveBlog=async (blog)=>{
         form.append("subtitle", blog.subtitle)
         form.append("cover", blog.cover)
         form.append("time_to_read", blog.time_to_read)
-        form.append("content", JSON.stringify(blog.content))
-        blog.content.forEach(cc => {
-            console.log(cc);
-        });
+        if(blog.content){
+            blog.content.forEach((cc, i) => {
+                if(cc.type === "image"){
+                    form.append(`images[]`, cc.value)
+                } else {
+                    form.append("content[]", cc.value)
+                }
+            });
+        }
         let res = await fetch(`${process.env.REACT_APP_API}/save-blog`, {
             method: "POST",
             headers: {

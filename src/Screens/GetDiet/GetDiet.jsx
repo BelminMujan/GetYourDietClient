@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { requestDiet } from "../../Api/diet.api";
 import Button from "../../Components/Button/Button";
 import Dropdown from "../../Components/Dropdown/Dropdown";
 import Input from "../../Components/Input/Input";
@@ -7,16 +8,27 @@ import OptionSelect from "../../Components/OptionSelect/OptionSelect";
 
 const GetDiet = () => {
     const [step, setStep] = useState(0);
-    const [goal, setGoal] = useState("");
+    const [goal, setGoal] = useState([]);
     const [body_type, setBodyType] = useState("");
     const [weight, setWeight] = useState("")
     const [height, setHeight] = useState("")
     const [activity, setActivity] = useState("");
+    const [allergies, setAllergies] = useState([])
+    const [diseases, setDiseases] = useState([])
     const [email, setEmail] = useState("")
     const [first_name, setFirstName] = useState("")
     const [last_name, setLastName] = useState("")
     const [gender, setGender] = useState("")
     const [dob, setDOB] = useState("")
+    const [createAccount, setCreateAccount] = useState('no')
+    const [password, setPassword] = useState('')
+    const [password_confirmed, setPasswordConfirmed] = useState('')
+    let title = "JavaScript Jeep";
+
+
+    let body = "It's Your boarding time";
+
+    var notification = new Notification(title, { body });
     const steps = [
         {
             title: "Goal",
@@ -25,7 +37,7 @@ const GetDiet = () => {
                     key: "goal",
                     type: "select",
                     value: goal,
-                    setValue: (v)=>setGoal(v),
+                    setValue: (v) => setGoal(v),
                     options: [
                         {
                             label: "Lose Weight",
@@ -51,20 +63,21 @@ const GetDiet = () => {
                     type: "number",
                     label: "Height",
                     value: height,
-                    onChange: (v)=>setHeight(v.target.value)
+                    onChange: (v) => setHeight(v.target.value)
                 },
                 {
                     key: "weight",
                     type: "number",
                     label: "Weight",
-                    onChange: (v)=>setWeight(v.target.value)
+                    value: weight,
+                    onChange: (v) => setWeight(v.target.value)
                 },
                 {
                     key: "body_type",
                     type: "dropdown",
                     label: "Body Type",
                     value: body_type,
-                    setValue: (v)=> setBodyType(v),
+                    setValue: (v) => setBodyType(v),
                     options: [
                         {
                             label: "Ectomorph",
@@ -88,7 +101,7 @@ const GetDiet = () => {
                     type: "dropdown",
                     label: "Activity",
                     value: activity,
-                    setValue: (v)=> setActivity(v),
+                    setValue: (v) => setActivity(v),
                     options: [
                         {
                             label: "Little or no exercise",
@@ -115,50 +128,182 @@ const GetDiet = () => {
             ],
         },
         {
+            properties: [
+                {
+                    label: 'Alergies',
+                    key: 'allergies',
+                    type: 'select',
+                    value: allergies,
+                    multiple: true,
+                    setValue: (v) => {
+                        if (allergies.includes(v)) {
+                            setAllergies([...allergies.filter(a => a !== v)])
+                        } else {
+                            setAllergies([...allergies, v])
+                        }
+                    },
+                    options: [
+                        {
+                            label: 'Peanut butter',
+                            value: 'peanut_butter'
+                        },
+                        {
+                            label: 'Gluten',
+                            value: 'gluten'
+                        },
+                        {
+                            label: 'Lactose Intolerance',
+                            value: 'lactose_intolerance'
+                        },
+                        {
+                            label: 'Eggs',
+                            value: 'eggs'
+                        },
+                        {
+                            label: 'Walnuts',
+                            value: 'walnuts'
+                        },
+                        {
+                            label: 'Wheat',
+                            value: 'wheat'
+                        },
+                        {
+                            label: 'Chocolate',
+                            value: 'chocolate'
+                        },
+                        {
+                            label: 'Soj',
+                            value: 'soj'
+                        },
+                    ]
+                },
+                {
+                    label: 'Diseases',
+                    type: 'select',
+                    value: diseases,
+                    multiple: true,
+                    setValue: (v) => {
+                        if (diseases.includes(v)) {
+                            setDiseases([...diseases.filter(d => d !== v)])
+                        } else {
+                            setDiseases([...diseases, v])
+                        }
+                    },
+                    options: [
+                        {
+                            label: 'Diabetes',
+                            value: 'diabetes'
+                        },
+                        {
+                            label: 'Blood pressure',
+                            value: 'blog_pressure'
+                        },
+                        {
+                            label: 'Cholesterol',
+                            value: 'cholesterol'
+                        },
+                        {
+                            label: 'Increase HDL or LDL',
+                            value: 'hdl_ldl'
+                        },
+                    ]
+                }
+            ]
+        },
+        {
             title: "User info",
-            properties:[
+            properties: [
                 {
                     key: "email",
-                    type:"string",
+                    type: "string",
                     label: "Email",
                     value: email,
-                    onChange: (v)=> setEmail(v.target.value)
+                    onChange: (v) => setEmail(v.target.value)
                 },
                 {
                     key: "first_name",
-                    type:"string",
+                    type: "string",
                     label: "First Name",
                     value: first_name,
-                    onChange: (v)=> setFirstName(v.target.value)
+                    onChange: (v) => setFirstName(v.target.value)
                 },
                 {
                     key: "last_name",
-                    type:"string",
+                    type: "string",
                     label: "Last Name",
                     value: last_name,
-                    onChange: (v)=> setLastName(v.target.value)
+                    onChange: (v) => setLastName(v.target.value)
                 },
                 {
                     key: "gender",
-                    type:"string",
+                    type: "select",
                     label: "Gender",
                     value: gender,
-                    onChange: (v)=> setGender(v.target.value)
+                    setValue: (v) => setGender(v),
+                    options: [
+                        {
+                            label: 'Male',
+                            value: 'm'
+                        },
+                        {
+                            label: 'Female',
+                            value: 'f'
+                        }
+                    ]
                 },
                 {
                     key: "dob",
-                    type:"string",
+                    type: "date",
                     label: "Date of Birth",
                     value: dob,
-                    onChange: (v)=> setDOB(v.target.value)
+                    onChange: (v) => setDOB(v.target.value)
                 },
             ]
-        }
+        },
+        {
+            title: 'Do you want to create an account?',
+            properties: [
+                {
+                    key: 'create_account',
+                    type: 'select',
+                    value: createAccount,
+                    setValue: (v) => setCreateAccount(v),
+                    options: [
+                        {
+                            label: 'No',
+                            value: 'no'
+                        },
+                        {
+                            label: 'Yes',
+                            value: 'yes'
+                        }
+                    ]
+                },
+                createAccount === 'yes' && {
+                    label: 'Password',
+                    key: 'password',
+                    type: 'password',
+                    value: password,
+                    onChange: (v) => setPassword(v.target.value)
+                },
+                createAccount === 'yes' && {
+                    label: 'Password confirmation',
+                    key: 'password_confirmet',
+                    type: 'password',
+                    value: password_confirmed,
+                    onChange: (v) => setPasswordConfirmed(v.target.value)
+                }
+            ]
+        },
     ];
-    const handleNext=()=>{
-        if(step + 1 < steps.length){
+    useEffect(() => {
+        console.log(allergies);
+    }, [allergies])
+    const handleNext = async () => {
+        if (step + 1 < steps.length) {
             setStep(step + 1)
         } else {
+            requestDiet({goal,body_type,weight,height,activity,allergies,diseases,email,first_name,last_name,gender,dob,createAccount,password, password_confirmed})
             console.log("submit form");
         }
     }
@@ -172,22 +317,23 @@ const GetDiet = () => {
                             <div>
                                 <h3>{prop.label}</h3>
                                 {prop.options.map((opt) => {
-                                    return <OptionSelect selected={opt.value === prop.value} onClick={()=> prop.setValue(opt.value)} {...opt} />;
+                                    return <OptionSelect selected={prop.value.includes(opt.value)} onClick={() => prop.setValue(opt.value)} {...opt} />;
                                 })}
                             </div>
                         );
-                        break;
                     case "number":
                         return <Input inline type="number" {...prop} />;
                     case "string":
-                        return <Input  {...prop} />;
+                    case "password":
+                    case "date":
+                        return <Input {...prop} />;
                     case "dropdown":
                         return <Dropdown inline {...prop} />
                     default:
                         break;
                 }
             })}
-            <Button onClick={handleNext}>{step + 1 < steps.length ? "Next": "Done"}</Button>
+            <Button onClick={handleNext}>{step + 1 < steps.length ? "Next" : "Done"}</Button>
         </div>
     );
 };

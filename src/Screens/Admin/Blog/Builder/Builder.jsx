@@ -23,7 +23,7 @@ const Builder = () => {
         blog?.title && setTitle(blog?.title);
         blog?.subtitle && setSubtitle(blog?.subtitle);
         blog?.cover && setCover(blog?.cover);
-        blog?.content && setContent(JSON.parse(blog?.content));
+        blog?.content && setContent(blog?.content);
         blog?.time_to_read && setTimeToRead(blog?.time_to_read);
     }, []);
 
@@ -56,14 +56,14 @@ const Builder = () => {
                 content.length !== 0 &&
                 content.map((c, i) => {
                     switch (c.type) {
-                        case "text":
+                        case "content":
                             return <Input value={c.value} onChange={(e)=>handleContentChange(i, e.target.value)}/>;
                         case "image":
                             return <Input type="file" onChange={(e)=>handleContentChange(i, e.target.files[0])}/>;
                     }
                 })}
             <div className="actions">
-                <Button onClick={() => handleAddElement("text")}>Add content</Button>
+                <Button onClick={() => handleAddElement("content")}>Add content</Button>
                 <Button onClick={() => handleAddElement("image")}>Add Image</Button>
             </div>
         </div>
