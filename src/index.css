@@ -191,4 +191,13 @@ code {
   align-items: center;
   flex-direction: column;
   gap: 0.25rem;
+}
+.get-diet-wrapper .select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.get-diet-wrapper .select-wrapper.inline {
+  flex-direction: row;
+  align-items: center;
 }/*# sourceMappingURL=index.css.map */
