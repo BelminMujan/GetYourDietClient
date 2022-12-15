@@ -1,33 +1,45 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import LandingPage from "./Screens/Landing/LandingPage";
-import Sidebar from "./Components/Sidebar/Sidebar";
-import { adminPanelSidebarRoutes } from "./Components/Constants/adminPanel";
-import { Provider } from "react-redux"
-import store from "./store";
-import { loadUser } from "./redux/userSlice";
-import AdminWrapper from "./Screens/Admin/AdminWrapper";
-import Login from "./Screens/Auth/Login";
-import GetDiet from "./Screens/GetDiet/GetDiet";
-const root = ReactDOM.createRoot(document.getElementById("root"));
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import LandingPage from './Screens/Landing/LandingPage';
+import { adminPanelSidebarRoutes } from './Components/Constants/adminPanel';
+import { Provider } from 'react-redux'
+import store from './store';
+import AdminWrapper from './Screens/Admin/AdminWrapper';
+import Login from './Screens/Auth/Login';
+import GetDiet from './Screens/GetDiet/GetDiet';
+import Blog from './Screens/Blog/Blog';
+import Blogs from './Screens/Blogs/Blogs';
+const root = ReactDOM.createRoot(document.getElementById('root'));
 const routes = createBrowserRouter([
     {
-        path: "",
+        path: '',
         element: <LandingPage />,
     },
     {
-        path: "login",
+        path: 'login',
         element: <Login/>
     },
     {
-        path: "get-diet",
+        path: 'get-diet',
         element: <GetDiet/>
     },
     {
-        path: "admin",
+        path: 'blog',
+        children: [
+            {
+                path: '',
+                element: <Blogs/>,  
+            },
+            {
+                path: ':id',
+                element: <Blog/>
+            }
+        ]
+    },
+    {
+        path: 'admin',
         element: <AdminWrapper/>,
         children: [...adminPanelSidebarRoutes],
     },

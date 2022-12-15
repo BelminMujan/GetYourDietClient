@@ -143,6 +143,7 @@ code {
   display: grid;
   border-bottom: 1px solid gray;
   padding: 0.5rem 1rem;
+  align-items: center;
 }
 
 .option-select-wrapper {
@@ -156,6 +157,50 @@ code {
   color: white;
 }
 
+.blog-item-wrapper {
+  max-width: 450px;
+}
+.blog-item-wrapper img {
+  width: 100%;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-wrapper .backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(100, 100, 100, 0.75);
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+}
+.modal-wrapper .content {
+  position: relative;
+  padding: 2rem 3rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  z-index: 3;
+}
+.modal-wrapper .content .close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.modal-wrapper .content .close:hover {
+  transform: scale(1.1);
+}
+
 .admin-account-wrapper {
   display: flex;
   flex-direction: column;
@@ -163,6 +208,36 @@ code {
   align-items: flex-start;
 }
 
+.admin-diet-request-edit-wrapper .controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.admin-diet-request-edit-wrapper .form {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 2rem;
+}
+.admin-diet-request-edit-wrapper .input-item {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+
+.admin-diet-wrapper {
+  width: 90%;
+}
+.admin-diet-wrapper .week {
+  border-top: 1px solid black;
+}
+.admin-diet-wrapper .week .days .day {
+  border-bottom: 1px solid gray;
+}
+.admin-diet-wrapper .week .days .day .meals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
 .admin-blog-builder-wrapper {
   display: flex;
   flex-direction: column;
@@ -171,6 +246,9 @@ code {
 .admin-blog-builder-wrapper .actions {
   display: flex;
   gap: 0.5rem;
+}
+.admin-blog-builder-wrapper img {
+  width: 150px;
 }
 
 .login-wrapper {
@@ -200,4 +278,16 @@ code {
 .get-diet-wrapper .select-wrapper.inline {
   flex-direction: row;
   align-items: center;
-}/*# sourceMappingURL=index.css.map */
+}
+
+.blog-wrapper {
+  padding-top: 4rem;
+}
+
+.admin-food-edit-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/*# sourceMappingURL=index.css.map */

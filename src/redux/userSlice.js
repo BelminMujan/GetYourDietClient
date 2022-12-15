@@ -2,10 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
     name: "user",
-    initialState: { user: null, errors: null, message: null, loading: false },
+    initialState: { user: null, allUsers: null, errors: null, message: null, loading: false },
     reducers: {
         loginSuccess: (state, action) => {
             state.user = action.payload;
+        }, 
+        usersSuccess: (state, action) => {
+            state.allUsers = action.payload;
         },
         loginErrors: (state, action) => {
             state.errors = action.payload;
@@ -111,5 +114,48 @@ export const updateUser=(data)=>async (dispatch) =>{
     }
 }
 
-export const { loginSuccess, logoutReducer, loginErrors, loginMessage, loginLoading } = userSlice.actions;
+export const getAllUsers = () => async (dispatch) => {
+    try {
+        dispatch(loginLoading(true))
+        let res = await fetch(`${process.env.REACT_APP_API}/get-all-users`, {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        dispatch(loginErrors(null));
+        dispatch(loginMessage(null));
+        let data = await res.json();
+        if (data?.errors) {
+            dispatch(loginErrors(data.errors));
+        }
+        if (data?.message) {
+            dispatch(loginMessage(data.message));
+        }
+        dispatch(loginLoading(false))
+        if (data?.users) {
+            dispatch(usersSuccess(data.users));
+            return data.users;
+        }
+        return false
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const deleteUser=async (id)=>{
+    console.log(id);
+    try {
+        let res = await fetch(`${process.env.REACT_APP_API}/delete-user/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        return res
+    } catch (e) {
+       return console.log(e);
+    }
+}
+
+export const { loginSuccess, usersSuccess, logoutReducer, loginErrors, loginMessage, loginLoading } = userSlice.actions;
 export default userSlice.reducer;

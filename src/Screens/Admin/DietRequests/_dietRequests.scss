@@ -1,0 +1,42 @@
+.admin-diet-request-wrapper{
+
+}
+.admin-diet-request-edit-wrapper{
+  .controls{
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .form{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap:0.25rem;
+    margin-bottom: 2rem;
+  }
+  .input-item{
+    display: grid;
+    grid-template-columns:40% 60% ;
+  }
+}
+
+.admin-diet-wrapper{
+  width: 90%;
+  .week{
+    border-top: 1px solid black;
+    .days{
+      .day{
+        border-bottom: 1px solid gray;
+        .meals{
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          .food{
+
+          }
+        }
+      }
+    }
+  }
+
+}
+

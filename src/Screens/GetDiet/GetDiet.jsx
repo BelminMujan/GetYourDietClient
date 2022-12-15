@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { loadData, requestDiet } from "../../Api/diet.api";
+import { requestDiet } from "../../Api/diet.api";
 import Button from "../../Components/Button/Button";
 import Dropdown from "../../Components/Dropdown/Dropdown";
 import Input from "../../Components/Input/Input";
 import OptionSelect from "../../Components/OptionSelect/OptionSelect";
+import { loadData } from "../../Utils/loadData";
 
 const GetDiet = () => {
     const [step, setStep] = useState(0);
-    const [goal, setGoal] = useState([]);
+    const [goal, setGoal] = useState('');
     const [body_type, setBodyType] = useState("");
     const [weight, setWeight] = useState("")
     const [height, setHeight] = useState("")
@@ -20,7 +21,7 @@ const GetDiet = () => {
     const [last_name, setLastName] = useState("")
     const [gender, setGender] = useState("")
     const [dob, setDOB] = useState("")
-    const [createAccount, setCreateAccount] = useState('no')
+    const [create_account, setCreateAccount] = useState('no')
     const [password, setPassword] = useState('')
     const [password_confirmed, setPasswordConfirmed] = useState('')
 
@@ -36,9 +37,11 @@ const GetDiet = () => {
             setDiseasesData(res.map(r => ({ label: r.title, value: r.id })))
         })
         loadData('activities').then(res => {
+            setActivity(res?.[0].id)
             setActivitiesData(res.map(r => ({ label: r.title, value: r.id })))
         })
         loadData('body-types').then(res => {
+            setBodyType(res?.[0].id)
             setBodyTypesData(res.map(r => ({ label: r.title, value: r.id, help: r.help})))
         })
     }, [])
@@ -47,7 +50,7 @@ const GetDiet = () => {
             title: "Goal",
             properties: [
                 {
-                    key: "goal",
+                    name: "goal",
                     type: "select",
                     value: goal,
                     setValue: (v) => setGoal(v),
@@ -72,21 +75,21 @@ const GetDiet = () => {
             title: "Physical attributes",
             properties: [
                 {
-                    key: "height",
+                    name: "height",
                     type: "number",
                     label: "Height",
                     value: height,
                     onChange: (v) => setHeight(v.target.value)
                 },
                 {
-                    key: "weight",
+                    name: "weight",
                     type: "number",
                     label: "Weight",
                     value: weight,
                     onChange: (v) => setWeight(v.target.value)
                 },
                 {
-                    key: "body_type",
+                    name: "body_type",
                     type: "dropdown",
                     label: "Body Type",
                     value: body_type,
@@ -94,7 +97,7 @@ const GetDiet = () => {
                     options: bodyTypesDate,
                 },
                 {
-                    key: "activity",
+                    name: "activity",
                     type: "dropdown",
                     label: "Activity",
                     value: activity,
@@ -107,7 +110,7 @@ const GetDiet = () => {
             properties: [
                 {
                     label: 'Alergies',
-                    key: 'allergies',
+                    name: 'allergies',
                     type: 'select',
                     value: allergies,
                     multiple: true,
@@ -140,28 +143,28 @@ const GetDiet = () => {
             title: "User info",
             properties: [
                 {
-                    key: "email",
-                    type: "string",
+                    name: "email",
+                    type: "email",
                     label: "Email",
                     value: email,
                     onChange: (v) => setEmail(v.target.value)
                 },
                 {
-                    key: "first_name",
-                    type: "string",
+                    name: "first_name",
+                    type: "text",
                     label: "First Name",
                     value: first_name,
                     onChange: (v) => setFirstName(v.target.value)
                 },
                 {
-                    key: "last_name",
-                    type: "string",
+                    name: "last_name",
+                    type: "text",
                     label: "Last Name",
                     value: last_name,
                     onChange: (v) => setLastName(v.target.value)
                 },
                 {
-                    key: "gender",
+                    name: "gender",
                     type: "select",
                     label: "Gender",
                     value: gender,
@@ -179,7 +182,7 @@ const GetDiet = () => {
                     ]
                 },
                 {
-                    key: "dob",
+                    name: "dob",
                     type: "date",
                     label: "Date of Birth",
                     value: dob,
@@ -191,9 +194,9 @@ const GetDiet = () => {
             title: 'Do you want to create an account?',
             properties: [
                 {
-                    key: 'create_account',
+                    name: 'create_account',
                     type: 'select',
-                    value: createAccount,
+                    value: create_account,
                     inline: true,
                     setValue: (v) => setCreateAccount(v),
                     options: [
@@ -207,17 +210,19 @@ const GetDiet = () => {
                         }
                     ]
                 },
-                createAccount === 'yes' && {
+                {
                     label: 'Password',
-                    key: 'password',
+                    name: 'password',
                     type: 'password',
+                    hidden: create_account,
                     value: password,
                     onChange: (v) => setPassword(v.target.value)
                 },
-                createAccount === 'yes' && {
+                {
                     label: 'Password confirmation',
-                    key: 'password_confirmet',
+                    name: 'password_confirmet',
                     type: 'password',
+                    hidden: create_account,
                     value: password_confirmed,
                     onChange: (v) => setPasswordConfirmed(v.target.value)
                 }
@@ -232,7 +237,7 @@ const GetDiet = () => {
         if (step + 1 < steps.length) {
             setStep(step + 1)
         } else {
-            requestDiet({ goal, body_type, weight, height, activity, allergies, diseases, email, first_name, last_name, gender, dob, createAccount, password, password_confirmed })
+            requestDiet({ goal, body_type, weight, height, activity, allergies, diseases, email, first_name, last_name, gender, dob, create_account, password, password_confirmed })
             console.log("submit form");
         }
     }
@@ -240,6 +245,10 @@ const GetDiet = () => {
         <div className="get-diet-wrapper">
             <h3>{steps[step].title}</h3>
             {steps[step].properties.map((prop, i) => {
+                console.log(create_account);
+                if(prop.hidden){
+                    return;
+                }
                 switch (prop.type) {
                     case "select":
                         return (
@@ -252,14 +261,10 @@ const GetDiet = () => {
                         );
                     case "number":
                         return <Input key={'step-' + i} inline type="number" {...prop} />;
-                    case "string":
-                    case "password":
-                    case "date":
-                        return <Input key={'step-' + i} {...prop} />;
                     case "dropdown":
                         return <Dropdown key={'step-' + i} inline {...prop} />
                     default:
-                        break;
+                        return <Input key={'step-' + i} {...prop} />;
                 }
             })}
             <Button onClick={handleNext}>{step + 1 < steps.length ? "Next" : "Done"}</Button>

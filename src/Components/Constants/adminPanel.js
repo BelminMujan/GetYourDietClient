@@ -1,12 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Account from "../../Screens/Admin/Account/Account";
-import Articles from "../../Screens/Admin/Articles/Articles";
+import Food from "../../Screens/Admin/Food/Food";
 import Blog from "../../Screens/Admin/Blog/Blog";
 import Builder from "../../Screens/Admin/Blog/Builder/Builder";
 import Dashboard from "../../Screens/Admin/Dashboard/Dashboard";
 import DietRequests from "../../Screens/Admin/DietRequests/DietRequests";
+import DietRequestsEdit from "../../Screens/Admin/DietRequests/Edit";
 import Transactions from "../../Screens/Admin/Transactions/Transactions";
 import Users from "../../Screens/Admin/Users/Users";
+import FoodEdit from "../../Screens/Admin/Food/Edit";
+import UsersEdit from "../../Screens/Admin/Users/Edit";
 
 export const adminPanelSidebarRoutes = [
     {
@@ -27,17 +30,44 @@ export const adminPanelSidebarRoutes = [
     {
         title: "Diet requests",
         path: "diet-requests",
-        element: <DietRequests />,
+        children: [
+            {
+                path: '',
+                element: <DietRequests/>
+            },
+            {
+                path: ':id',
+                element: <DietRequestsEdit/>
+            }
+        ]
     },
     {
         title: "Users",
         path: "users",
-        element: <Users />,
+        children: [
+            {
+                path: '',
+                element: <Users/>
+            },
+            {
+                path: ':id',
+                element: <UsersEdit/>
+            }
+        ]
     },
     {
-        title: "Articles",
-        path: "articles",
-        element: <Articles />,
+        title: "Food",
+        path: "food",
+        children: [
+            {
+                path: '',
+                element: <Food/>
+            },
+            {
+                path: ':id',
+                element: <FoodEdit/>
+            }
+        ]
     },
     {
         title: "Blog",

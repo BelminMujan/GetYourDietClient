@@ -15,18 +15,51 @@ export const requestDiet=async(data)=>{
     }
 }
 
-
-export const loadData=async(path)=>{
+export const generateDiet=async(id)=>{
     try {
-        let res = await fetch(`${process.env.REACT_APP_API}/load/${path}`, {
-            headers:{
-                Accept: 'application/json'
-            }
-        })
-        let data = res.json()
-        return data
+        let res = await fetch(`${process.env.REACT_APP_API}/generate-diet/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept:"application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        console.log(res);
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
-   
+}
+
+export const getDiet=async(id)=>{
+    try {
+        let res = await fetch(`${process.env.REACT_APP_API}/get-diet/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept:"application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        return await res.json()
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+export const setDietStatus=async(dietRequestId, newStatusId)=>{
+    try {
+        let res = await fetch(`${process.env.REACT_APP_API}/set-diet-status`,{
+            method: 'POST',
+            headers: {
+                Accept:"application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({dietRequestId, newStatusId})
+        });
+        return res
+    } catch (e) {
+        console.log(e);
+    }
 }

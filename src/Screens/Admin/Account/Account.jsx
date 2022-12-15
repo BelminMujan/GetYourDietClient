@@ -75,6 +75,7 @@ const Account = () => {
     const handleEdit = async () => {
         if (editing) {
             let pd = {};
+            pd.account = true
             if (user.first_name !== first_name) pd.first_name = first_name;
             if (user.last_name !== last_name) pd.last_name = last_name;
             if (user.email !== email) pd.email = email;
@@ -84,6 +85,8 @@ const Account = () => {
             if(res === true) {
                 setEditing(false);
                 toast.success("User updated sucessfully!", options)
+            } else {
+                toast.error("Error updating user!", options)
             }
         } else {
             setEditing(true);

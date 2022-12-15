@@ -1,31 +1,29 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { saveBlog } from "../../../../Api/adminBlog.api";
+import { getBlog, saveBlog } from "../../../../Api/adminBlog.api";
 import Button from "../../../../Components/Button/Button";
 import Input from "../../../../Components/Input/Input";
 
 const Builder = () => {
     let params = useParams();
-    const dispatch = useDispatch();
     const [title, setTitle] = useState("");
     const [subtitle, setSubtitle] = useState("");
     const [cover, setCover] = useState(null);
+    const [coverUrl, setCoverUrl] = useState(null)
     const [time_to_read, setTimeToRead] = useState("");
     const [content, setContent] = useState([]);
-    let { blogs } = useSelector((state) => state.blogs);
 
     useEffect(() => {
-        let blog = blogs.find((e) => e.id == params.id);
-        console.log(blog);
-        blog?.title && setTitle(blog?.title);
-        blog?.subtitle && setSubtitle(blog?.subtitle);
-        blog?.cover && setCover(blog?.cover);
-        blog?.content && setContent(blog?.content);
-        blog?.time_to_read && setTimeToRead(blog?.time_to_read);
-    }, []);
+        getBlog(params.id).then(data=>{
+            data?.title && setTitle(data?.title);
+            data?.subtitle && setSubtitle(data?.subtitle);
+            data?.cover && setCoverUrl(data?.cover);
+            data?.content && setContent(data?.content);
+            data?.time_to_read && setTimeToRead(data?.time_to_read);        })
+       
+    }, [params.id]);
 
     const handleSave = () => {
         saveBlog({ id: params.id, title, subtitle, cover, time_to_read, content });
@@ -52,14 +50,20 @@ const Builder = () => {
             <Input label="Blog subtitle" value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
             <Input label="Time to read" type="number" min={1} value={time_to_read} onChange={(e) => setTimeToRead(e.target.value)} />
             <Input label="Cover" type="file" onChange={(e) => setCover(e.target.files[0])} />
+            <img alt='' src={`${process.env.REACT_APP_STORAGE}/images/blog/cover/${coverUrl}`}/>
             {content &&
                 content.length !== 0 &&
-                content.map((c, i) => {
+                content?.map((c, i) => {
                     switch (c.type) {
                         case "content":
                             return <Input value={c.value} onChange={(e)=>handleContentChange(i, e.target.value)}/>;
                         case "image":
-                            return <Input type="file" onChange={(e)=>handleContentChange(i, e.target.files[0])}/>;
+                            return <div>
+                                    <Input type="file" onChange={(e)=>handleContentChange(i, e.target.files[0])}/>
+                                    <img alt='' src={`${process.env.REACT_APP_STORAGE}/images/blog/images/${c?.value}`}/>
+                                </div>
+                        default: 
+                            return
                     }
                 })}
             <div className="actions">
